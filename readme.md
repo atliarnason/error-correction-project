@@ -3,7 +3,7 @@ This repository contains relevant files for a project conducted in the context o
 
 # Lab 1 - FPGA to FPGA transmission
 
-In this first lab, you will design and implement a Hamming error correction code encoder and decoder. A single-error-corection-double-error-detection (SEC-DED) extension to the Hamming (7,4) error correction code will be used, where an eigth bit captures parity information of the whole message. The encoder and decoder will be used to transmit data between two different FPGAs. On the sender FPGA board, a 4-bit message entered via switches is encoded and sent by wires to the receiver FPGA board. Here the message is decoded and potential errors are signaled by LEDs. Both FPGAs should agree on the original message, even if one wire is disconnected. A block diagram of the system is shown below:
+In this first lab, you will design and implement a Hamming error correction code encoder and decoder. A single-error-corection-double-error-detection (SEC-DED) extension to the Hamming (7,4) error correction code will be used, where an eigth bit captures parity information of the whole message. The encoder and decoder will be used to transmit data between two different FPGAs. On the sender FPGA board, a 4-bit message entered via switches is encoded and sent by wires to the receiver FPGA board. Here the message is decoded and potential errors are signaled by LEDs. One LED signals an error (single or double), the other signals whether the error was corrected. Both FPGAs should agree on the original message, even if one wire is disconnected. A block diagram of the system is shown below:
 
 
 ![](fig/Hamming_FPGA_system_block.png)
