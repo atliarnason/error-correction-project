@@ -89,3 +89,24 @@ On the receiver FPGA, the received eight bits are shown on the eight rightmost L
 1. First verify that messages are sent correctly between the boards with all wires connected.
 2. Now start to remove single wires and observe the reaction of the circuit. Does it indicate that and error occurred? If not why?
 3. Remove two wires and observe the reaction of the circuit. Does it indicate a double error? Change the message on the sender FPGA. Does the receiver FPGAs output change?
+
+
+# Lab 2 - ECC Memory
+
+In this lab you will design a protection unit which sits in front of a memory module to create an error correction capable memory system. The ECC memory operates on 16-bit data. When data should be written to memory, request and write are asserted while the address and write data are applied to the respective inputs. When data should be read, request is asserted while the address is applied. The read data is presented at the output when acknowledge is asserted by the protection unit. If the data read from the memory is determined to be corrupted, the error flag is asserted.
+
+The actual memory which is used to store data and parity bits together has a one cycle read delay.
+
+![](fig/prot_unit.png)
+
+1. Familiarize yourself with the VHDL entity in [ProtectionUnit.vhdl](src/design/memory/ProtectionUnit.vhdl)
+2. Draw a block diagram of an implementation of the protection unit using encoder and decoder blocks
+3. Create a testbench to test the read and write behavior of the protection unit
+4. Implement the protection unit in VHDL
+
+
+## Extensions
+
+The Hamming error correction code with the SEC-DED extension can only detect up to double errors. In a memory where bit flips might occur continuously, one 8-bit encoded piece of data might experience more than two bit flips over longer time. It would therefore make sense to correct a single-bit error in memory as soon as it is detected. Extend the protection unit to write the corrected data back to memory when a single-bit flip is detected.
+
+The previously described extension relies on data being read frequently. A piece of data in memory which is not accessed frequently will not benefit from the extension. If the protection unit does not receive new requests every clock cycle, idle cycles could be used to search through the memory for single-bit errors and correct them. Extend the protection unit to scan the memory for errors while being idle.
