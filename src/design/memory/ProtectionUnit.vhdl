@@ -30,8 +30,8 @@ entity ProtectionUnit is
         mem_request: out std_logic;
         mem_write: out std_logic;
         mem_address: out std_logic_vector(address_width-1 downto 0);
-        mem_write_data: out std_logic_vector(32 downto 0);
-        mem_read_data: in std_logic_vector(32 downto 0)
+        mem_write_data: out std_logic_vector(31 downto 0);
+        mem_read_data: in std_logic_vector(31 downto 0)
     );
 end entity;
 

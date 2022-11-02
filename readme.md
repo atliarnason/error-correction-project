@@ -110,3 +110,21 @@ The actual memory which is used to store data and parity bits together has a one
 The Hamming error correction code with the SEC-DED extension can only detect up to double errors. In a memory where bit flips might occur continuously, one 8-bit encoded piece of data might experience more than two bit flips over longer time. It would therefore make sense to correct a single-bit error in memory as soon as it is detected. Extend the protection unit to write the corrected data back to memory when a single-bit flip is detected.
 
 The previously described extension relies on data being read frequently. A piece of data in memory which is not accessed frequently will not benefit from the extension. If the protection unit does not receive new requests every clock cycle, idle cycles could be used to search through the memory for single-bit errors and correct them. Extend the protection unit to scan the memory for errors while being idle.
+
+
+# Lab 3 - Resource Consumption and Timing
+
+In this final part of the project, the resource consumption in the form of look-up tables (LUT) and the timing characteristics of the Protection Unit and its components will be investigated.
+
+1. Open the Timing Vivado project in the `pojects` directory.
+2. Select one of the three wrapper entities as the *top module*
+3. Synthesize the entity by clicking `run synthesis` in the action list to the left of the window
+4. Open the synthesized design
+5. Select `Report Timing Summary` and leave the configuration of the pop-up window as is.
+6. At the bottom of the window, a timing summary will appear.
+
+Timing in Vivado is measured using negative slack. A negative setup slack of 3ns with a clock period of 10ns means that the critical path is 7ns. A positive slack value thus means that the timing requirements given by the clock are met, a negative slack value means that the timing of a flip-flop was violated.
+
+When the synthesized design is open, to the left of the chip overview you can find a subwindow called `Netlist`. When selecting an entity in this subwindow, you can choose the `Statistics` tab in the subwindow below to see the resource consumption of the entity.
+
+7. Repeat the synthesis process for all three available wrapper entities and obtain resource consumption and critical path lengths for the entities you have designed.
