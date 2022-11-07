@@ -37,7 +37,7 @@ begin
     hamming_parity_bits <= x_encoded(3) & x_encoded(1 downto 0);
     
     -- check parity of coded message (ignore the linter, this is legal in vhdl-2008)
-    parity_ok <= not (x_encoded(7) xnor (xor x_encoded)); 
+    parity_ok <= not (x_encoded(7) xor (xor x_encoded(6 downto 0))); 
 
     error_pos(0) <= (hamming_parity_bits(0) xor data_bits(0)) xor (data_bits(1) xor data_bits(3));
     error_pos(1) <= (hamming_parity_bits(1) xor data_bits(0)) xor (data_bits(2) xor data_bits(3));
@@ -47,14 +47,14 @@ begin
     -- we have 2 errors.
     -- mask <= std_logic_vector(to_unsigned(1,8) sll to_integer(unsigned(error_pos))) when error_pos /= "000" else "00000000";
     
-    mask <= "00000000" when error_pos = "000" else std_logic_vector(to_unsigned(1,8) sll to_integer(unsigned(error_pos)));
+    mask <= "00000000" when error_pos = "000" else std_logic_vector(to_unsigned(1,8) sll (to_integer(unsigned(error_pos)-1)) );
 
     corrected_message <= x_encoded xor mask;
     x <= corrected_message(6 downto 4) & corrected_message(2);
     
     error <= '1' when (?? (parity_ok)) and ((error_pos) /= "000") else '0';
 
-    corrected <= '1' when ((error_pos) /= "000") else '0';
+    corrected <= '1' when ((error_pos) /= "000" or (?? (not parity_ok))) else '0';
 
 end architecture;
 
