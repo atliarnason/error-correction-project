@@ -16,8 +16,8 @@ entity HammingDecoder is
     port(
         x_encoded:  in  std_logic_vector(7 downto 0):= "00000000";
         x:          out std_logic_vector(3 downto 0);
-        corrected:  out std_logic;
-        error:      out std_logic
+        corrected:  out std_logic; -- asserted if error was corrected
+        error:      out std_logic  -- asserted if error is detected (single or double)
     );
 end entity;
 
