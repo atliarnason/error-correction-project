@@ -49,18 +49,6 @@ begin
         check(x"e", "01111000", dut_in, dut_out, expected);        
         check(x"f", "11111111", dut_in, dut_out, expected);        
 
-
-
-
-
-
-
-
-
-
-
-        -- add other stimuli here
-
         std.env.stop(0);
     end process;
 
