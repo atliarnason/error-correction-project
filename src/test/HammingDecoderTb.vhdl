@@ -160,13 +160,101 @@ begin
         -- This mask will have 1 hi bit, resulting in 1 error occurring. (exhaustive testing of 
         -- this would require 128 test cases.)
 
+	encoded <= "00010000";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "0000"))
+    		report("Test failed for " & "10000000" & "decoded_message_expected = 00000000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
 
+	encoded <= "10000011";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "0001"))
+    		report("Test failed for " & "10000011" & "decoded_message_expected = 10000000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
 
+	encoded <= "10011101";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "0010"))
+    		report("Test failed for " & "10011101" & "decoded_message_expected = 10000000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
 
+	encoded <= "00011111";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "0011"))
+    		report("Test failed for " & "11111000" & "decoded_message_expected = 11000000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
 
+	encoded <= "11101010";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "0100"))
+    		report("Test failed for " & "11101010" & "decoded_message_expected = 10000000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
 
+	encoded <= "00101111";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "0101"))
+    		report("Test failed for " & "10111100" & "decoded_message_expected = 10100000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
 
+	encoded <= "00110010";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "0110"))
+    		report("Test failed for " & "11001000" & "decoded_message_expected = 11000000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
 
+	encoded <= "10110110";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "0111"))
+    		report("Test failed for " & "10110110" & "decoded_message_expected = 11100000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
+
+	encoded <= "01000011";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "1000"))
+    		report("Test failed for " & "10000110" & "decoded_message_expected = 10000000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
+
+	encoded <= "01001100";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "1001"))
+    		report("Test failed for " & "10011000" & "decoded_message_expected = 10010000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
+
+	encoded <= "11010000";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "1010"))
+    		report("Test failed for " & "11010000" & "decoded_message_expected = 10100000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
+
+	encoded <= "11010101";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "1011"))
+    		report("Test failed for " & "11010101" & "decoded_message_expected = 10110000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
+
+	encoded <= "11100000";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "1100"))
+    		report("Test failed for " & "11100000" & "decoded_message_expected = 11000000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
+
+	encoded <= "01101110";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "1101"))
+    		report("Test failed for " & "11011100" & "decoded_message_expected = 11010000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
+
+	encoded <= "11111000";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "1110"))
+    		report("Test failed for " & "11111000" & "decoded_message_expected = 11100000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
+
+	encoded <= "11111101";
+    	wait for period;
+    	report( "Encoded message is " & to_string(encoded));
+    	assert ((corrected = '1') and (error = '0') and (decoded = "1111"))
+    		report("Test failed for " & "11111101" & "decoded_message_expected = 11110000 but was actually " & to_string(decoded) & " | Corrected or Error are wrong: " & to_string(corrected) & to_string(error));
 
         wait; -- indefinitely suspend process
     end process;
