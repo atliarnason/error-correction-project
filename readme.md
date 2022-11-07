@@ -3,7 +3,7 @@ This repository contains relevant files for a project conducted in the context o
 
 # Lab 1 - FPGA to FPGA transmission
 
-In this first lab, you will design and implement a Hamming error correction code encoder and decoder. A single-error-corection-double-error-detection (SEC-DED) extension to the Hamming (7,4) error correction code will be used, where an eigth bit captures parity information of the whole message. The encoder and decoder will be used to transmit data between two different FPGAs. On the sender FPGA board, a 4-bit message entered via switches is encoded and sent by wires to the receiver FPGA board. Here the message is decoded and potential errors are signaled by LEDs. Both FPGAs should agree on the original message, even if one wire is disconnected. A block diagram of the system is shown below:
+In this first lab, you will design and implement a Hamming error correction code encoder and decoder. A single-error-corection-double-error-detection (SEC-DED) extension to the Hamming (7,4) error correction code will be used, where an eigth bit captures parity information of the whole message. The encoder and decoder will be used to transmit data between two different FPGAs. On the sender FPGA board, a 4-bit message entered via switches is encoded and sent by wires to the receiver FPGA board. Here the message is decoded and potential errors are signaled by LEDs. One LED signals an error (single or double), the other signals whether the error was corrected. Both FPGAs should agree on the original message, even if one wire is disconnected. A block diagram of the system is shown below:
 
 
 ![](fig/Hamming_FPGA_system_block.png)
@@ -89,3 +89,42 @@ On the receiver FPGA, the received eight bits are shown on the eight rightmost L
 1. First verify that messages are sent correctly between the boards with all wires connected.
 2. Now start to remove single wires and observe the reaction of the circuit. Does it indicate that and error occurred? If not why?
 3. Remove two wires and observe the reaction of the circuit. Does it indicate a double error? Change the message on the sender FPGA. Does the receiver FPGAs output change?
+
+
+# Lab 2 - ECC Memory
+
+In this lab you will design a protection unit which sits in front of a memory module to create an error correction capable memory system. The ECC memory operates on 16-bit data. When data should be written to memory, request and write are asserted while the address and write data are applied to the respective inputs. When data should be read, request is asserted while the address is applied. The read data is presented at the output when acknowledge is asserted by the protection unit. If the data read from the memory is determined to be corrupted, the error flag is asserted.
+
+The actual memory which is used to store data and parity bits together has a one cycle read delay.
+
+![](fig/prot_unit.png)
+
+1. Familiarize yourself with the VHDL entity in [ProtectionUnit.vhdl](src/design/memory/ProtectionUnit.vhdl)
+2. Draw a block diagram of an implementation of the protection unit using encoder and decoder blocks
+3. Create a testbench to test the read and write behavior of the protection unit
+4. Implement the protection unit in VHDL
+
+
+## Extensions
+
+The Hamming error correction code with the SEC-DED extension can only detect up to double errors. In a memory where bit flips might occur continuously, one 8-bit encoded piece of data might experience more than two bit flips over longer time. It would therefore make sense to correct a single-bit error in memory as soon as it is detected. Extend the protection unit to write the corrected data back to memory when a single-bit flip is detected.
+
+The previously described extension relies on data being read frequently. A piece of data in memory which is not accessed frequently will not benefit from the extension. If the protection unit does not receive new requests every clock cycle, idle cycles could be used to search through the memory for single-bit errors and correct them. Extend the protection unit to scan the memory for errors while being idle.
+
+
+# Lab 3 - Resource Consumption and Timing
+
+In this final part of the project, the resource consumption in the form of look-up tables (LUT) and the timing characteristics of the Protection Unit and its components will be investigated.
+
+1. Open the Timing Vivado project in the `pojects` directory.
+2. Select one of the three wrapper entities as the *top module*
+3. Synthesize the entity by clicking `run synthesis` in the action list to the left of the window
+4. Open the synthesized design
+5. Select `Report Timing Summary` and leave the configuration of the pop-up window as is.
+6. At the bottom of the window, a timing summary will appear.
+
+Timing in Vivado is measured using negative slack. A negative setup slack of 3ns with a clock period of 10ns means that the critical path is 7ns. A positive slack value thus means that the timing requirements given by the clock are met, a negative slack value means that the timing of a flip-flop was violated.
+
+When the synthesized design is open, to the left of the chip overview you can find a subwindow called `Netlist`. When selecting an entity in this subwindow, you can choose the `Statistics` tab in the subwindow below to see the resource consumption of the entity.
+
+7. Repeat the synthesis process for all three available wrapper entities and obtain resource consumption and critical path lengths for the entities you have designed.
