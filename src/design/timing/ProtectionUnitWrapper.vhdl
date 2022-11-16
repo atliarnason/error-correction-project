@@ -80,7 +80,7 @@ begin
         reset,
         request_reg,
         write_reg,
-        acknowledge_reg,
+        prot_acknowledge,
         prot_error,
         address_reg,
         write_data_reg,
