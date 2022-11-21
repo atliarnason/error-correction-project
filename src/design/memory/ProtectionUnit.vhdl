@@ -10,6 +10,7 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use work.all;
 
 entity ProtectionUnit is
     generic(
@@ -21,17 +22,17 @@ entity ProtectionUnit is
 
         request: in std_logic;
         write: in std_logic;
-        acknowledge: out std_logic;
+        acknowledge: out std_logic := '0';
         error: out std_logic;
         address: in std_logic_vector(address_width-1 downto 0);
 	write_data: in std_logic_vector(15 downto 0); -- we assume that this is 4 x 4 bits that are to be encoded
-        read_data: out std_logic_vector(15 downto 0); -- vice versa
+        read_data: out std_logic_vector(15 downto 0) := X"0000"; -- vice versa
 
         mem_request: out std_logic;
         mem_write: out std_logic;
         mem_address: out std_logic_vector(address_width-1 downto 0);
         mem_write_data: out std_logic_vector(31 downto 0);
-        mem_read_data: in std_logic_vector(31 downto 0)
+        mem_read_data: in std_logic_vector(31 downto 0):= X"00000000"
     );
 end entity;
 
@@ -54,10 +55,10 @@ architecture Behavioral of ProtectionUnit is
     end component;
 
     -- types
-	type state is (state_read,state_write );
+	type state is (state_read,state_write,state_idle, state_waiting  );
 
     -- signals
-	signal crt_state, next_state : state;
+	signal crt_state, next_state : state := state_idle;
 	signal waiting : std_logic := '0';
 begin
 
@@ -80,8 +81,11 @@ begin
 
 	-- we need a state machine to talk to the memory
 	-- and next-state logic - dependent on the 'write' flag
-	next_state <= state_write when (??request) and (write = '1') else 
-				  state_read; 
+	next_state <= state_write when (??request) and (write = '1') and (waiting = '0') else 
+				  state_read when ((??request) and (write = '0')) and (waiting = '0') else
+				  state_waiting when (waiting = '1') else
+				  state_idle; 
+
 
 	process(clock)	
 	begin
@@ -89,27 +93,28 @@ begin
 			if reset = '1' then
 				-- reset
 			else
-				crt_state <= next_state;		
-
+				crt_state <= next_state;
 			end if;
 		end if;
 	end process;
 
-	process(clock) begin
+	process(crt_state) begin
 		case crt_state is
 			when state_read =>	
-								if waiting = '1' then
-									waiting <= '0';
-									acknowledge <= '1';
-								else
-									mem_address <= address;
-									mem_request <= request;
-									acknowledge <= '0';
-									waiting <= '1';
-								end if;
+								mem_address <= address;
+								mem_request <= request;
+								mem_write <= write;
+								acknowledge <= '0';
+								waiting <= '1';
 			when state_write =>
-			   					mem_request <= request;
-								mem_write <= mem_write;
+								mem_request <= request;
+								mem_write <= write;
+								mem_address <= address;
+			when state_idle =>
+								null;
+			when state_waiting => 
+								acknowledge <= '1';
+								waiting <= '0';
 		end case;
 	end process;
 
